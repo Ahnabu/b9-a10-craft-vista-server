@@ -19,10 +19,16 @@ const client = new MongoClient(uri, {
     }
 });
 
+
+// server link : https://a10-server-2b2043hi4-abu-horairas-projects.vercel.app
+// sesh e deploy kore local host gula re update kore dite hobe.
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
+        app.get('/user', (req, res) => {
+            res.send('Hello User!')
+        })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
