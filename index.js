@@ -128,15 +128,20 @@ async function run() {
             const result = await artCollection.findOne(query);
             res.send(result);
         })
-
+ 
         app.get('/myArt/:email', async (req, res) => {
             const email = req.params.email
-            console.log(req.params);
-            const result = await artCollection.find({ User_Email: email }).toArray()
            
-        
-
+            const result = await artCollection.find({ User_Email: email }).toArray()
             res.send(result)
+        })
+        app.delete('/delete/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id); 
+          
+            const result = await artCollection.deleteOne({ _id: new ObjectId(req.params.id) }); 
+            console.log(result);
+            res.send(result);
         })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
