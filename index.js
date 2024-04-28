@@ -110,11 +110,15 @@ async function run() {
         await client.connect();
         const artCollection = client.db('artCollection').collection('arts');
         app.get('/arts', async (req, res) => {
-
             const cursor = artCollection.find();
             const result = await cursor.toArray();
-
             res.send(result);
+        })
+        app.get('/arts/:subcategory', async (req, res) => {
+            const subcategory = req.params.subcategory
+            const result = await artCollection.find({ subcategory_Name: subcategory}).toArray()
+            res.send(result)
+           
         })
     
         app.post('/addArt', async (req, res) => {
@@ -125,7 +129,6 @@ async function run() {
         })
         app.get('/details/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(id);
             const query = { _id: new ObjectId(id) }
             const result = await artCollection.findOne(query);
             res.send(result);
@@ -139,10 +142,10 @@ async function run() {
         })
         app.delete('/delete/:id', async (req, res) => {
             const id = req.params.id
-            console.log(id); 
+            
           
             const result = await artCollection.deleteOne({ _id: new ObjectId(req.params.id) }); 
-            console.log(result);
+            
             res.send(result);
         })
         app.put('/update/:id', async (req, res) => {
@@ -164,7 +167,7 @@ async function run() {
                 }
             }
             const result = await artCollection.updateOne(filter, art, options);
-            console.log(result);
+           
             res.send(result);
         })
         // Send a ping to confirm a successful connection
