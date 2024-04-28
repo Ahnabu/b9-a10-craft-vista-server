@@ -116,10 +116,12 @@ async function run() {
 
             res.send(result);
         })
+    
         app.post('/addArt', async (req, res) => {
             const newArt = req.body;
             const arts = await artCollection.insertOne(newArt)
-            res.send(arts)
+            
+            res.send(arts) 
         })
         app.get('/details/:id', async (req, res) => {
             const id = req.params.id;
@@ -140,6 +142,28 @@ async function run() {
             console.log(id); 
           
             const result = await artCollection.deleteOne({ _id: new ObjectId(req.params.id) }); 
+            console.log(result);
+            res.send(result);
+        })
+        app.put('/update/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updatedArt = req.body
+            const art = {
+                $set:{
+                    image_url :updatedArt.image_url,
+                    item_name :updatedArt.item_name,
+                    subcategory_Name :updatedArt.subcategory_Name,
+                    short_description :updatedArt.short_description,
+                    price :updatedArt.price,
+                    rating :updatedArt.rating,
+                    customization :updatedArt.customization,
+                    processing_time :updatedArt.processing_time,
+                    stockStatus :updatedArt.stockStatus,
+                }
+            }
+            const result = await artCollection.updateOne(filter, art, options);
             console.log(result);
             res.send(result);
         })
