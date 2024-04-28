@@ -110,11 +110,11 @@ async function run() {
         await client.connect();
         const artCollection = client.db('artCollection').collection('arts');
         app.get('/arts', async (req, res) => {
-            
+
             const cursor = artCollection.find();
             const result = await cursor.toArray();
-            console.log(result);
-            res.send(result); 
+
+            res.send(result);
         })
         app.post('/addArt', async (req, res) => {
             const newArt = req.body;
@@ -123,9 +123,20 @@ async function run() {
         })
         app.get('/details/:id', async (req, res) => {
             const id = req.params.id;
+            console.log(id);
             const query = { _id: new ObjectId(id) }
             const result = await artCollection.findOne(query);
             res.send(result);
+        })
+
+        app.get('/myArt/:email', async (req, res) => {
+            const email = req.params.email
+            console.log(req.params);
+            const result = await artCollection.find({ User_Email: email }).toArray()
+           
+        
+
+            res.send(result)
         })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
