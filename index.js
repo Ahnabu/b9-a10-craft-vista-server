@@ -109,6 +109,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         const artCollection = client.db('artCollection').collection('arts');
+        const categoryCollection = client.db('artCollection').collection('categories');
         app.get('/arts', async (req, res) => {
             const cursor = artCollection.find();
             const result = await cursor.toArray();
@@ -134,10 +135,20 @@ async function run() {
             res.send(result);
         })
  
+        app.get('/myArt/:email/:customization', async (req, res) => {
+            const email = req.params.email
+            const customization = req.params.customization
+            console.log(req.params);
+            const result = await artCollection.find({ User_Email: email, customization: customization }).toArray()
+            
+            res.send(result)
+        })
         app.get('/myArt/:email', async (req, res) => {
             const email = req.params.email
-           
-            const result = await artCollection.find({ User_Email: email }).toArray()
+            
+            console.log(req.params);
+            const result = await artCollection.find({ User_Email: email}).toArray()
+            
             res.send(result)
         })
         app.delete('/delete/:id', async (req, res) => {
