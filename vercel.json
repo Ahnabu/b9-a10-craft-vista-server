@@ -2,72 +2,21 @@
     "version": 2,
     "builds": [
         {
-            "src": "./index.js",
+            "src": "index.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
-            "src": "/api/getEndpoint",
-            "dest": "server.js",
+            "src": "/(.*)",
+            "dest": "index.js",
             "methods": [
-                "GET"
-            ]
-        },
-        {
-            "src": "/api/postEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "POST"
-            ]
-        },
-        {
-            "src": "/api/putEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "PUT"
-            ]
-        },
-        {
-            "src": "/api/deleteEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "DELETE"
-            ]
-        },
-        {
-            "src": "/api/patchEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "PATCH"
-            ]
-        },
-        {
-            "src": "/api/optionsEndpoint",
-            "dest": "server.js",
-            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
                 "OPTIONS"
-            ]
-        },
-        {
-            "src": "/api/headEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "HEAD"
-            ]
-        },
-        {
-            "src": "/api/traceEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "TRACE"
-            ]
-        },
-        {
-            "src": "/api/connectEndpoint",
-            "dest": "server.js",
-            "methods": [
-                "CONNECT"
             ]
         }
     ]
