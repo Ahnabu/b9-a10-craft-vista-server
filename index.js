@@ -113,7 +113,7 @@ async function run() {
         app.get('/arts', async (req, res) => {
             const cursor = artCollection.find();
             const result = await cursor.toArray();
-            res.send(result);
+            res.send(result); 
         })
         app.get('/arts/:subcategory', async (req, res) => {
             const subcategory = req.params.subcategory
@@ -134,7 +134,14 @@ async function run() {
             const result = await artCollection.findOne(query);
             res.send(result);
         })
- 
+        app.get('/:email', async (req, res) => {
+            const email = req.params.email
+
+            console.log(email);
+            const result = await artCollection.find({ User_Email: email }).toArray()
+
+            res.send(result)
+        })
         app.get('/myArt/:email/:customization', async (req, res) => {
             const email = req.params.email
             const customization = req.params.customization
@@ -143,14 +150,7 @@ async function run() {
             
             res.send(result)
         })
-        app.get('/myArt/:email', async (req, res) => {
-            const email = req.params.email
-            
-            console.log(req.params);
-            const result = await artCollection.find({ User_Email: email}).toArray()
-            
-            res.send(result)
-        })
+       
         app.delete('/delete/:id', async (req, res) => {
             const id = req.params.id
             
