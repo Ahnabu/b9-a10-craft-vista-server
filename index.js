@@ -19,14 +19,30 @@ const client = new MongoClient(uri, {
     }
 });
 
+
+
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
        
         const artCollection = client.db('artCollection').collection('arts');
+        const bestCollection = client.db('artCollection').collection('best');
+        const ideaCollection = client.db('artCollection').collection('ideas');
         const categoryCollection = client.db('artCollection').collection('categories');
         app.get('/arts', async (req, res) => {
             const cursor = artCollection.find();
+            const result = await cursor.toArray();
+            console.log(result);
+            res.send(result); 
+        })
+        app.get('/ideas', async (req, res) => {
+            const cursor = ideaCollection.find();
+            const result = await cursor.toArray();
+            console.log(result);
+            res.send(result); 
+        })
+        app.get('/best', async (req, res) => {
+            const cursor = bestCollection.find();
             const result = await cursor.toArray();
             console.log(result);
             res.send(result); 
@@ -48,6 +64,12 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
             const result = await artCollection.findOne(query);
+            res.send(result);
+        })
+        app.get('/details/subcategory/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await categoryCollection.findOne(query);
             res.send(result);
         })
         app.get('/:email', async (req, res) => {
